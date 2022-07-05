@@ -1,0 +1,13 @@
+"deploy client":
+  image: evertonildo/evertonildo-hub:serverless-awscli #nikolaik/python-nodejs:python3.8-nodejs14-alpine
+  stage: deploy
+  script:
+    #- pip install awscli
+    - cd client
+    - yarn
+    - yarn build-$CI_COMMIT_REF_NAME
+    - aws s3 sync dist/dashboard/ s3://$CI_COMMIT_REF_NAME-portal-do-credito-pre-cadastro --delete --acl public-read
+  only:
+    refs:
+      - hom
+      - prod

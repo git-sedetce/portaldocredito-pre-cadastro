@@ -1,0 +1,106 @@
+<div class="example-container mat-elevation-z8" style="border-radius: 10px">
+  <div style="width: 100%; z-index: 5">
+    <h2>Desempenho por Hora</h2>
+  </div>
+  <div class="container" fxLayout="row wrap">
+    <mat-form-field fxFlex="40">
+      <input
+        matInput
+        (keyup)="applyFilter($event.target.value)"
+        placeholder="Filter"
+      />
+    </mat-form-field>
+    <mat-icon class="pointer" fxFlex="2" title="search" (click)="search()"
+      >search</mat-icon
+    >
+    <mat-paginator
+      #paginator
+      fxFlex
+      style="z-index: 5"
+      [pageSize]="10"
+      showFirstLastButtons
+      [pageSizeOptions]="[5, 10, 20, 100]"
+      (page)="getServerData($event)"
+    >
+    </mat-paginator>
+    <mat-icon
+      class="pointer"
+      matSuffix
+      fxFlex="2"
+      title="Refresh"
+      (click)="refresh()"
+      >refresh</mat-icon
+    >
+  </div>
+  <mat-table *ngIf="dataSource" #table [dataSource]="dataSource">
+    <ng-container matColumnDef="ano">
+      <mat-header-cell *matHeaderCellDef> Data</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.ano }}.{{ element.mes }}.{{ element.dia }}</mat-cell
+      >
+    </ng-container>
+    <ng-container matColumnDef="hora">
+      <mat-header-cell *matHeaderCellDef> Hora</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.hora }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="total">
+      <mat-header-cell *matHeaderCellDef> Total</mat-header-cell>
+      <mat-cell *matCellDef="let element" title="{{ element.password }}">
+        {{ element.total }}</mat-cell
+      >
+    </ng-container>
+    <ng-container matColumnDef="media">
+      <mat-header-cell *matHeaderCellDef> Média</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.media | number: "1.1-1" }}</mat-cell
+      >
+    </ng-container>
+    <ng-container matColumnDef="verificado">
+      <mat-header-cell *matHeaderCellDef> Verificados</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.verificado }} ({{
+          (element.verificado / element.total) * 100 | number: "1.1-1"
+        }}%)</mat-cell
+      >
+    </ng-container>
+
+    <ng-container matColumnDef="nao_verificado">
+      <mat-header-cell *matHeaderCellDef> Não Verificados</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.nao_verificado }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="elegivel">
+      <mat-header-cell *matHeaderCellDef> Elegíveis</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.elegivel }} ({{
+          (element.elegivel / element.total) * 100 | number: "1.1-1"
+        }}%)
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="nao_elegivel">
+      <mat-header-cell *matHeaderCellDef> Não Elegíveis</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.nao_elegivel }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="capital">
+      <mat-header-cell *matHeaderCellDef> Capital</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.capital }} ({{
+          (element.capital / element.total) * 100 | number: "1.1-1"
+        }}%)
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="interior">
+      <mat-header-cell *matHeaderCellDef> Interior</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.interior }}</mat-cell>
+    </ng-container>
+
+    <mat-header-row
+      *matHeaderRowDef="displayedColumns; sticky: true"
+    ></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>

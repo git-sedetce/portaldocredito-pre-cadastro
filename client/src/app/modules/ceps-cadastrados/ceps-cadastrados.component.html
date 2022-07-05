@@ -1,0 +1,76 @@
+<div class="example-container mat-elevation-z8" style="border-radius: 10px">
+  <div style="width: 100%; z-index: 5">
+    <h2>CEPs Cadastrados</h2>
+  </div>
+  <div class="container" fxLayout="row wrap">
+    <mat-form-field fxFlex>
+      <input
+        matInput
+        (keyup)="applyFilter($event.target.value)"
+        placeholder="Filter"
+      />
+    </mat-form-field>
+    <!--mat-icon class="pointer" matSuffix title="Editar" (click)="add()"
+        >add_circle</mat-icon
+      -->
+    <mat-paginator
+      #paginator
+      style="z-index: 5"
+      [pageSize]="10"
+      showFirstLastButtons
+      [pageSizeOptions]="[5, 10, 20, 100]"
+    >
+    </mat-paginator>
+  </div>
+  <mat-table #table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> Id</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.id }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="localidade">
+      <mat-header-cell *matHeaderCellDef> Localidade</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.localidade }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="bairro">
+      <mat-header-cell *matHeaderCellDef> Bairro</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.bairro }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="cep">
+      <mat-header-cell *matHeaderCellDef> CEP</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.cep }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="logradouro">
+      <mat-header-cell *matHeaderCellDef> Logradouro</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.logradouro }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="complemento">
+      <mat-header-cell *matHeaderCellDef> Complemento</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.complemento }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="ibge">
+      <mat-header-cell *matHeaderCellDef> Código IBGE</mat-header-cell>
+      <mat-cell *matCellDef="let element" class="pointer">
+        {{ element.ibge }}</mat-cell
+      >
+    </ng-container>
+    <ng-container matColumnDef="uf">
+      <mat-header-cell *matHeaderCellDef> UF</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.uf }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="ddd">
+      <mat-header-cell *matHeaderCellDef> Código DDD</mat-header-cell>
+      <mat-cell *matCellDef="let element" class="pointer">
+        {{ element.ddd }}</mat-cell
+      >
+    </ng-container>
+    <mat-header-row
+      *matHeaderRowDef="displayedColumns; sticky: true"
+    ></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>

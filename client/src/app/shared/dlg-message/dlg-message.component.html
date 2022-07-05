@@ -1,0 +1,11 @@
+<h1>{{ titulo }}</h1>
+<br /><br />
+<ul>
+  <li *ngFor="let item of mensagens">
+    <b>{{ item.split('*')[0] }}</b>{{item.split('*')[1]}}
+  </li>
+</ul>
+<br /><br />
+<div mat-dialog-actions>
+  <button mat-button (click)="dialogRef.close()" cdkFocusInitial> Ok </button>
+</div>

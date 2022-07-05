@@ -1,0 +1,54 @@
+.quadro-cadastro-dados {
+  min-width: 75%;
+}
+.quadro-cadastro-dados-interno {
+  max-width: 1205px;
+}
+
+
+
+.titulo-interno {
+  font-family: Isidora Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 25px;
+  /* identical to box height, or 129% */
+
+  display: flex;
+  align-items: center;
+
+  color: #0facbd;
+}
+
+.w30pct {
+  width: 60%;
+}
+
+.max-300 {
+  width: 100%;
+  max-width: 600px;
+}
+
+.mat-drawer-content {
+  padding: 10px !important;
+}
+
+.titulo-interno-inativo {
+  font-family: Isidora Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 25px;
+  /* identical to box height, or 129% */
+
+  display: flex;
+  align-items: center;
+
+  color: #c5c5c5;
+}
+
+.mat-column-acao {
+  padding:5px;
+  max-width:60px;
+}

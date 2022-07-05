@@ -1,0 +1,25 @@
+<div class="example-container mat-elevation-z8" [formGroup]="formGroup">
+    <h1 mat-dialog-title i18n>Bem vindo. Informe o seu CPF no campo abaixo para que possamos enviar um código para a troca de senha</h1>
+    <div mat-dialog-content>
+      <p>{{ texto }}</p>
+      <div class="container">
+        <mat-form-field fxFlex>
+          <input matInput placeholder="CPF" formControlName="cpf" />
+        </mat-form-field>
+      </div>
+      
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="this.dialogRef.close()" i18n>Cancelar </button>
+      <button
+        class="pointer"
+        mat-button
+        (click)="onClick(formGroup.value)"
+        cdkFocusInitial
+        i18n
+      >
+        Enviar </button
+      >
+    </div>
+  </div>
+  

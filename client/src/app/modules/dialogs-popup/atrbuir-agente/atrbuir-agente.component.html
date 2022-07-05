@@ -1,0 +1,28 @@
+<div class="example-container mat-elevation-z8">
+  <h1 mat-dialog-title i18n>Atribuição de Agente de Crédito ao Cliente</h1>
+  <mat-card style="width: 100% !important" [formGroup]="formGroup">
+    <mat-card-header class="example-card">
+      <!--span class="material-icons"> person_add </span-->
+    </mat-card-header>
+    <mat-card-content fxLayout class="example-card">
+      <div fxLayout="row wrap">
+        <mat-form-field fxFlex class="max-300">
+          <mat-select
+            placeholder="Selecione o Agente Cobrador"
+            formControlName="AgenteId"
+            required
+          >
+            <mat-option *ngFor="let item of agentes" [value]="item.id">
+              {{ item.texto }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="dialogRef.close()">Cancelar</button>
+      <button mat-button (click)="save(formGroup.value)">Enviar</button>
+      <br />
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Edição {{ data.name }}</h1>
+<div mat-dialog-content [formGroup]="formGroup">
+  <p style="min-height: 40px">O tipo do domínio não poderá ser alterado</p>
+  <div fxLayout="row wrap" class="dialog">
+    <mat-form-field fxFlex="40">
+      <mat-label>Código</mat-label>
+      <input matInput formControlName="code" />
+    </mat-form-field>
+    <mat-form-field fxFlex="95">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+    
+    <mat-form-field fxFlex="95">
+      <mat-label>Tipo</mat-label>
+      <input matInput formControlName="domain_type" />
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="excluir()">Excluir</button>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button (click)="save(formGroup.value)" cdkFocusInitial>
+    Gravar
+  </button>
+</div>

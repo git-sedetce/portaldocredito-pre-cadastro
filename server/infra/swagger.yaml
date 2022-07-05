@@ -1,0 +1,283 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: "Swagger CearaCredi"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "evertonildo@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "rnjerw00n9.execute-api.sa-east-1.amazonaws.com"
+basePath: "/prod"
+tags:
+  - name: "User"
+    description: "Dados do cidadão"
+  - name: "Domain"
+    description: "Dados auxiliares"
+  - name: "Agente"
+    description: "Dados básicos do agente de crédito"
+  - name: "Supervisor"
+    description: "Dados básicos do supervisor"
+schemes:
+  - "https"
+  - "http"
+paths:
+  /e-dinheiro/cadastros:
+    get:
+      tags:
+        - "e-dinheiro"
+      summary: "Devolve um json com os dados dos clientes cadastrados"
+      description: "Somente os clientes verificados serão listados"
+      operationId: "e-dinheiro-cadastros"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page"
+          in: "query"
+          description: "página solicitada"
+          required: true
+          type: "number"
+          items:
+            type: "string"
+          collectionFormat: "multi"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+  /e-dinheiro/agentes:
+    get:
+      tags:
+        - "e-dinheiro"
+      summary: "Lista de agentes"
+      description: "Lista de agentes"
+      operationId: "listaagentes"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page"
+          in: "query"
+          description: "paginação"
+          required: true
+          type: "number"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Agente"
+  /e-dinheiro/supervisores:
+    get:
+      tags:
+        - "e-dinheiro"
+      summary: "Lista de supervisores"
+      description: "retorna a lista de supervisores"
+      operationId: "listadesupervisores"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Supervisor"
+  /e-dinheiro/domains:
+    get:
+      tags:
+        - "e-dinheiro"
+      summary: "Lista dos dominios usados no sistema"
+      description: "O sistema trabalha com uma tabela de domínios. Essa tabela substitui um grande número de tabelas dual-fields"
+      operationId: "getdomains"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Domain"
+securityDefinitions:
+  basicAuth:
+    type: basic
+definitions:
+  User:
+    type: "object"
+    properties:
+      created_at:
+        type: "string"
+        format: "date-time"
+      name:
+        type: "string"
+      email:
+        type: "string"
+      cpf:
+        type: "string"
+      phone:
+        type: "string"
+      status:
+        type: "string"
+      birthday:
+        type: "string"
+        format: "date-time"
+      city_id:
+        type: "integer"
+        format: "int64"
+      txt_city:
+        type: "string"
+      sn_emancipeted:
+        type: "string"
+      social_name:
+        type: "string"
+      rg:
+        type: "string"
+      fm_sexo:
+        type: "string"
+      address:
+        type: "string"
+      txt_neighbor:
+        type: "string"
+      cep:
+        type: "string"
+      mother_name:
+        type: "string"
+      opc_estado_civil:
+        type: "integer"
+      sn_is_cadunico:
+        type: "string"
+      opc_occupation_id:
+        type: "integer"
+      txt_occupation:
+        type: "string"
+      total_income:
+        type: "integer"
+      sn_declare_income_tax:
+        type: "string"
+      txt_socials_beneficities:
+        type: "string"
+      txt_socials_programs:
+        type: "string"
+      bank_account:
+        type: "string"
+      bank_code:
+        type: "string"
+      opc_study_level:
+        type: "integer"
+      sn_have_halth_problems:
+        type: "string"
+      sn_is_family_boss:
+        type: "string"
+      sn_is_victim_of_violence:
+        type: "string"
+      sn_have_company:
+        type: "string"
+      opc_company_type:
+        type: "integer"
+      txt_company_type:
+        type: "string"
+      opc_company_activite:
+        type: "integer"
+      txt_company_activite:
+        type: "string"
+      opc_number_employes:
+        type: "integer"
+      txt_number_employes:
+        type: "string"
+      sn_have_loan:
+        type: "string"
+      opc_company_of_loan:
+        type: "integer"
+      txt_company_of_loan:
+        type: "string"
+      opc_objetive_of_loan:
+        type: "integer"
+      txt_objetive_of_loan:
+        type: "string"
+      opc_type_of_financing:
+        type: "integer"
+      txt_type_of_financing:
+        type: "string"
+      sn_need_training:
+        type: "string"
+      sn_have_internet:
+        type: "string"
+      sn_have_computer:
+        type: "string"
+      sn_own_email:
+        type: "string"
+      personal_references:
+        type: "string"
+      total_scores:
+        type: "integer"
+      sn_elegible:
+        type: "string"
+      elegibity:
+        type: "string"
+      cnpj_mei:
+        type: "string"
+      txt_how_will_be:
+        type: "string"
+      scores:
+        type: "integer"
+      opc_owner_house:
+        type: "integer"
+      txt_owner_house:
+        type: "string"
+      _sn_have_dependent:
+        type: "string"
+      number_dependents:
+        type: "integer"
+      address_number:
+        type: "string"
+      address_complement:
+        type: "string"
+      profile_id:
+        type: "integer"
+      egress_penal_system:
+        type: "string"
+      page:
+        type: "integer"
+  Agente:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      cpf:
+        type: "string"
+      email:
+        type: "string"
+  Domain:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      type:
+        type: "string"
+  Supervisor:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      cpf:
+        type: "string"
+      email:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

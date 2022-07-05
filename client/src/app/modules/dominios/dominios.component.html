@@ -1,0 +1,92 @@
+<div class="example-container mat-elevation-z8" style="border-radius: 10px">
+  <div style="width: 100%; z-index: 5">
+    <h2>Domínios</h2>
+  </div>
+  <div class="container" fxLayout="row wrap">
+    <mat-form-field fxFlex="15">
+      <mat-select
+        [(ngModel)]="tipoDominio"
+        (selectionChange)="selectedTipo()"
+        placeholder="Tipo de Domínio"
+      >
+        <mat-option *ngFor="let item of dominios" [value]="item.id"
+          >{{ item.texto }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div fxFlex="1"></div>
+    <mat-icon class="pointer" (click)="add()">add_circle</mat-icon>
+    <div fxFlex="1"></div>
+    <mat-form-field fxFlex>
+      <input
+        matInput
+        (keyup)="applyFilter($event.target.value)"
+        placeholder="Filter"
+      />
+    </mat-form-field>
+    <!--mat-icon class="pointer" matSuffix title="Editar" (click)="add()"
+      >add_circle</mat-icon
+    -->
+    <mat-paginator
+      #paginator
+      style="z-index: 5"
+      [pageSize]="10"
+      showFirstLastButtons
+      [pageSizeOptions]="[5, 10, 20, 100]"
+    >
+    </mat-paginator>
+  </div>
+  <mat-table #table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> Id</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.id }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="code">
+      <mat-header-cell *matHeaderCellDef> Código</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.code }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Nome</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.texto }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Sigla">
+      <mat-header-cell *matHeaderCellDef> Sigla</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.SiglaDominio }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="descrition">
+      <mat-header-cell *matHeaderCellDef> Descrição</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.descrition }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="domain_value">
+      <mat-header-cell *matHeaderCellDef> Valor</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.domain_value }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="is_active">
+      <mat-header-cell *matHeaderCellDef>
+        {{ element.is_active }}</mat-header-cell
+      >
+      <mat-cell
+        *matCellDef="let element"
+        class="pointer"
+        (click)="situacaoChange(element)"
+      >
+        {{ element.domain_flg === "S" ? "Sim" : "Não" }}</mat-cell
+      >
+    </ng-container>
+    <ng-container matColumnDef="Acao">
+      <mat-header-cell *matHeaderCellDef> Ação</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <mat-icon class="pointer" title="Editar" (click)="editar(element)"
+          >create</mat-icon
+        >
+      </mat-cell>
+    </ng-container>
+    <mat-header-row
+      *matHeaderRowDef="displayedColumns; sticky: true"
+    ></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>

@@ -1,0 +1,103 @@
+<div fxLayout="row wrap">
+  <div fxFlex="30">
+    Questões Frequêntes
+    <hr />
+    <ul>
+      <li></li>
+    </ul>
+  </div>
+  <div fxFlex class="items-center">
+    <div class="items-center" [formGroup]="formGroup">
+      <mat-card style="width: 100% !important" [formGroup]="formGroup">
+        <mat-card-header class="example-card">
+          <!--span class="material-icons"> person_add </span-->
+          <h1>Converse conosco</h1>
+        </mat-card-header>
+        <mat-card-content fxLayout class="example-card">
+          <div fxLayout="row wrap">
+            <mat-form-field fxFlex class="max-300">
+              <mat-select
+                placeholder="Assunto"
+                formControlName="AssuntoId"
+                required
+              >
+                <mat-option *ngFor="let item of assuntos" [value]="item.id">
+                  {{ item.texto }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+            <div fxFlex="99">
+              <mat-form-field fxFlex>
+                <input
+                  matInput
+                  formControlName="Nome"
+                  placeholder="Nome Completo"
+                  required
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlex="99">
+              <mat-form-field fxFlex>
+                <input
+                  matInput
+                  #inputCPF
+                  appCPFMask
+                  formControlName="CPF"
+                  placeholder="CPF"
+                  required
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlex="99">
+              <mat-form-field fxFlex>
+                <input
+                  matInput
+                  #inputEmail
+                  formControlName="eMail"
+                  placeholder="e-mail para retorno"
+                  required
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlex="99">
+              <mat-form-field fxFlex>
+                <input
+                  matInput
+                  appPhoneMask
+                  formControlName="Celular"
+                  placeholder="Celular para retorno"
+                  required
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlex="99">
+              <mat-form-field fxFlex>
+                <textarea
+                  matInput
+                  formControlName="Descricao"
+                  placeholder="Fale conosco, descreve"
+                  required
+                ></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button (click)="cancelarCadastro()">Cancelar</button>
+          <button
+            mat-button
+            [disabled]="
+              !validaCPF(inputCPF.value) ||
+              !validaEmail(inputEmail.value) ||
+              !formGroup.valid
+            "
+            (click)="save(formGroup.value)"
+          >
+            Enviar
+          </button>
+          <br />
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

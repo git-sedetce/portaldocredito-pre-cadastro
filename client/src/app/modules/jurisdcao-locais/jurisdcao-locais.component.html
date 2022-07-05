@@ -1,0 +1,119 @@
+<div class="example-container mat-elevation-z8" style="border-radius: 10px">
+  <div style="width: 100%; z-index: 5">
+    <h2 class="conhecendo-voce">
+      Definição dos locais da jurisdição
+      <button matSuffix mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button
+          mat-menu-item
+          (click)="jurisdicoes()"
+          AccessControl
+          [rules]="['admin']"
+        >
+          <mat-icon>back</mat-icon>
+          <span>Jurisdicoes</span>
+        </button>
+
+        <button
+          mat-menu-item
+          (click)="addAgentes()"
+          AccessControl
+          [rules]="['admin']"
+        >
+          <mat-icon>add</mat-icon>
+          <span>Incluir Agentes</span>
+        </button> </mat-menu
+      >&nbsp;
+    </h2>
+  </div>
+  <div class="container" fxLayout fxLayout="row wrap">
+    <div fxFlex class="max-300">
+      <label class="bold">Nome da Jurisdição</label>
+      <p>{{ jurisdicao?.name }}</p>
+    </div>
+    <div fxFlex class="max-300">
+      <label class="bold">Posto da Jurisdição</label>
+      <p>{{ jurisdicao?.posto }}</p>
+    </div>
+    <div fxFlex class="max-300">
+      <label class="bold">Supervisor da Jurisdição</label>
+      <p>{{ jurisdicao?.supervidornome }}</p>
+    </div>
+  </div>
+  <mat-tab-group>
+    <mat-tab label="Cidades">
+      <div fxFlex>
+        <mat-card class="max-300">
+          <mat-card-title>Localidades Vinculadas</mat-card-title>
+          <p>
+            <label *ngIf="municipiosvinculados.length === 0"
+              >Nenhuma localidade vinculada</label
+            >
+            <mat-checkbox
+              *ngFor="let item of municipiosvinculados"
+              class="example-margin"
+              #municipio
+              (change)="unCheckedMunicipio($event.checked, municipio.value)"
+              [value]="item.id"
+              >{{ item.texto }}</mat-checkbox
+            >&nbsp;&nbsp;
+          </p>
+        </mat-card>
+      </div>
+      <div fxFlex="99"></div>
+      <div class="max-300">
+        <mat-card *ngFor="let reg of cidadesdisponiveis" class="max-300">
+          <mat-card-title>{{ reg.regiao }}</mat-card-title>
+          <p>
+            <mat-checkbox
+              *ngFor="let item of reg.municipios"
+              class="borderbox"
+              #municipio
+              (change)="checkedMunicipio($event.checked, municipio.value)"
+              [value]="item.id"
+              >{{ item.texto }}</mat-checkbox
+            >
+          </p>
+        </mat-card>
+      </div>
+    </mat-tab>
+    <mat-tab label="Bairros de Fortaleza">
+      <div fxFlex>
+        <mat-card class="max-300">
+          <mat-card-title>Localidades Vinculadas</mat-card-title>
+          <p>
+            <label *ngIf="bairrosvinculados.length === 0"
+              >Nenhuma localidade vinculada</label
+            >
+            <mat-checkbox
+              *ngFor="let item of bairrosvinculados"
+              class="example-margin"
+              #bairro
+              (change)="unCheckedBairro($event.checked, bairro.value)"
+              [value]="item.texto"
+              >{{ item.texto }}</mat-checkbox
+            >&nbsp;&nbsp;
+          </p>
+        </mat-card>
+      </div>
+      <div fxFlex="99"></div>
+      <div class="max-300">
+        <mat-card class="max-300">
+          <mat-card-title>Bairros Disponíveis</mat-card-title>
+          <p>
+            <mat-checkbox
+              *ngFor="let item of bairrosdisponiveis"
+              class="borderbox"
+              #bairro
+              (change)="checkedBairro($event.checked, bairro.value)"
+              [value]="item.texto"
+              >{{ item.texto }}</mat-checkbox
+            >&nbsp;&nbsp;
+          </p>
+        </mat-card>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

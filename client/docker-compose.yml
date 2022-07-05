@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portaldocredito_app
+    restart: unless-stopped
+    environment:
+      XDEBUG_CONFIG: remote_host=$XDEBUG_HOST idekey=$BUSINESS_NAME
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./docker/xdebug/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: portaldocredito_nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx:/etc/nginx/conf.d
+
+  database:
+    image: postgres
+    container_name: portaldocredito_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: $DB_DATABASE
+      POSTGRES_USER: $DB_USERNAME
+      POSTGRES_PASSWORD: $DB_PASSWORD
+    env_file:
+      - .env
+    volumes:
+      - ./docker/postgres:/var/lib/postgresql/data
+      - ./client/documents:/home
+    ports:
+      - "5432:5432"
+  pgamin:
+    image: dpage/pgadmin4
+    container_name: pgAdmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL:$PGADMIN_DEFAULT_EMAIL
+      PGADMIN_DEFAULT_PASSWORD=$PGADMIN_DEFAULT_PASSWORD
+    volumes:
+      - ./postgres/pgadin
+    ports:
+      - "8080:80"

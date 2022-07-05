@@ -1,0 +1,90 @@
+<div class="example-container mat-elevation-z8" style="border-radius: 10px">
+  <div fxLayout="row wrap">
+    <div fxFlex="99">
+      <h2 class="conhecendo-voce">
+        Definição dos agentes por jurisdição&nbsp;&nbsp;
+        <button matSuffix mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button
+            mat-menu-item
+            (click)="jurisdicoes()"
+            AccessControl
+            [rules]="['admin']"
+          >
+            <mat-icon>back</mat-icon>
+            <span>Jurisdicoes</span>
+          </button>
+
+          <button
+            mat-menu-item
+            (click)="addLocais()"
+            AccessControl
+            [rules]="['admin']"
+          >
+            <mat-icon>add</mat-icon>
+            <span>Incluir Locais</span>
+          </button> </mat-menu
+        >&nbsp;
+      </h2>
+    </div>
+    <div fxFlex="99"></div>
+    <div fxFlex="99">
+      <div fxFlex class="max-300">
+        <label class="bold">Nome da Jurisdição</label>
+        <p>{{ jurisdicao?.name }}</p>
+      </div>
+      <div fxFlex class="max-300">
+        <label class="bold">Posto da Jurisdição</label>
+        <p>{{ jurisdicao?.posto }}</p>
+      </div>
+      <div fxFlex class="max-300">
+        <label class="bold">Supervisor da Jurisdição</label>
+        <p>{{ jurisdicao?.supervidornome }}</p>
+      </div>
+    </div>
+    <div fxFlex="99">
+      <fieldset>
+        <legend class="bold">Locais Atendidos</legend>
+        <label class="borderbox" *ngFor="let item of locais">
+          {{ item.texto }}
+        </label>
+      </fieldset>
+    </div>
+    <div fxFlex>
+      <mat-card fxFlex>
+        <mat-card-title>Agentes Vinculados</mat-card-title>
+        <p>
+          <label *ngIf="agentesVinculados.length === 0"
+            >Nenhum agente vinculado</label
+          >
+          <mat-checkbox
+            *ngFor="let item of agentesVinculados"
+            class="example-margin"
+            #municipio
+            (change)="unCheckedAgente($event.checked, municipio.value)"
+            [value]="item.id"
+            >{{ item.texto }}</mat-checkbox
+          >&nbsp;&nbsp;
+        </p>
+      </mat-card>
+    </div>
+    <div fxFlex="99"></div>
+    <div fxFlex>
+      <mat-card class="max-300">
+        <mat-card-title>Agentes Disponíveis</mat-card-title>
+        <p>
+          <mat-checkbox
+            *ngFor="let item of agentesDisponiveis"
+            class="borderbox"
+            #agente
+            (change)="checkedAgente($event.checked, agente.value)"
+            [value]="item.id"
+            >{{ item.texto }}</mat-checkbox
+          >
+        </p>
+      </mat-card>
+    </div>
+  </div>
+</div>

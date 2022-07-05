@@ -1,0 +1,19 @@
+<div class="container" *ngIf="elegivel">
+  <h2><b>CADASTRO realizado com sucesso. </b></h2>
+  <p>
+    Agora você deve aguardar o contato do agente de crédito para dar
+    prosseguimento a sua solicitação.
+  </p>
+</div>
+<br /><br /><br /><br /><br /><br />
+<div class="container" *ngIf="!elegivel">
+  <h2>
+    <b
+      >Infelizmente não será possível atendê-lo no Programa CEARÁ CREDI, de
+      microcrédito produtivo, porque sua renda ultrapassa o limite definido para
+      essa política pública que visa a assistência aos mais vulneráveis.
+      <br />Agradecemos seu contato.
+    </b>
+  </h2>
+  <p></p>
+</div>

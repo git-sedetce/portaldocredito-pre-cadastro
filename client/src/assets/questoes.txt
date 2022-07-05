@@ -1,0 +1,7 @@
+1. Acesso ao sistema edinheiro para poder compatibilizar os dados das tabelas periféricas.
+2. Estrutura do SSO
+3, Endpoints de interagração e estrutura do JSON
+4. Como será a integração com a SSPDS?
+5. SMS e Email, serão enviados pelo SSO? não existe isso.
+
+

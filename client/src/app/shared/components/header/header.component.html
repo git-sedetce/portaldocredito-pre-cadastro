@@ -1,0 +1,44 @@
+<mat-toolbar class="estado">
+  <mat-toolbar-row>
+    <button mat-icon-button (click)="toggleSideBar()">
+      <!-- <button
+      *ngIf="services.showHeader"
+      mat-icon-button
+      (click)="toggleSideBar()"
+    > -->
+      <mat-icon>menu</mat-icon>
+    </button>
+    <a href="https://cadastro.cearacredi.ce.gov.br"
+      ><img
+        matSuffix
+        src="../../../../assets/images/LogoCeara.png"
+        title="{{ contadores.qtd_hoje }}.{{ contadores.qtd_7dias }}.{{ contadores.qtd_15dias}}.{{ contadores.qtd_30dias }}.{{ contadores.qtd_6meses }}.{{ contadores.qtd_verificados }}.{{contadores.total}}.{{contadores.media_hora | number:'1.1-1'}}"
+    /></a>
+    <div style="width: 3%"></div>
+    <img matSuffix src="../../../../assets/images/LogoGoverno.png" />
+    <!-- <span> CrediCeara</span> -->
+
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+      <!--ul fxLayout="row" fxLayoutGap="20px">
+        <li>
+          v{{ versao }}
+        </li>
+        <li>
+          <span> | {{ services.UserName }}</span>
+        </li>
+        <li>
+          <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>person_outline</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button (click)="logout()" mat-menu-item>
+              <mat-icon>exit_to_app</mat-icon>
+              Sign out
+            </button>
+          </mat-menu>
+        </li>
+      </ul-->
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div class="linha"></div>

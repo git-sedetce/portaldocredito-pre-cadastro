@@ -1,0 +1,185 @@
+<div class="example-container mat-elevation-z8" style="border-radius: 10px">
+  <div style="width: 100%; z-index: 5">
+    <h2>Clientes varificados para {{ service.UserName }}</h2>
+  </div>
+  <div class="container">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Filtros </mat-panel-title>
+          <mat-panel-description>
+
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="container" fxLayout="row wrap" [formGroup]="formGroup">
+          <mat-checkbox formControlName="haveCompany">
+            Filtrar os que possuem negócio</mat-checkbox>
+          <div fxFlex="1"></div>
+          <mat-checkbox formControlName="haveLoan">
+            Filtrar os que possuem empréstimo</mat-checkbox>
+          <div fxFlex="1"></div>
+          <mat-checkbox formControlName="enviados">
+            Filtrar os enviados ao e-Dinheiro</mat-checkbox>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="container" fxLayout="row wrap">
+    <mat-form-field fxFlex>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter" />
+    </mat-form-field>
+    <div fxFlex="1"></div>
+    <mat-icon class="pointer" fxFlex="2" title="search" (click)="search()">search</mat-icon>
+    <div fxFlex="1"></div>
+    <div fxFlex *ngIf="service.Perfil === 'admin'">
+      <mat-form-field fxFlex>
+        <mat-select (selectionChange)="agenteSelecionado(agente.value)" #agente placeholder="Selecione um agente">
+          <mat-option *ngFor="let item of agentes" [value]="item.id">{{ item.texto }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="1"></div>
+    <mat-paginator #paginator fxFlex style="z-index: 5" [pageSize]="10" showFirstLastButtons
+      [pageSizeOptions]="[5, 10, 20, 100]">
+    </mat-paginator>
+    <mat-icon class="pointer" matSuffix fxFlex="2" title="Refresh" (click)="refresh()">refresh</mat-icon>
+    <div fxFlex="99">
+      <fieldset>
+        <legend class="bold">Locais Atendidos</legend>
+        <label class="borderbox" *ngFor="let item of locais">
+          {{ item.texto }} |
+        </label>
+      </fieldset>
+    </div>
+  </div>
+
+  <mat-table #table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> Id</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.id }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="regional">
+      <mat-header-cell *matHeaderCellDef>
+        Regional / Sede / Posto</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.regional }} <br />{{ element.sede }} <br />{{
+        element.posto
+        }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="cpf">
+      <mat-header-cell *matHeaderCellDef> CPF / Celular</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.cpf | cpf }}<br />
+        {{ element.phone | phone }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="nomeCidadao">
+      <mat-header-cell *matHeaderCellDef> Nome /Nome da Mãe</mat-header-cell>
+      <mat-cell *matCellDef="let element" title="{{ element.password }}">
+        {{ element.name }}<br />Mãe: {{ element.mother_name }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="foneCelular">
+      <mat-header-cell *matHeaderCellDef> Fone Celular</mat-header-cell>
+      <mat-cell *matCellDef="let element"> </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="sexo">
+      <mat-header-cell *matHeaderCellDef> Sexo</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.sexo }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="agente">
+      <mat-header-cell *matHeaderCellDef> Agente</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.agente }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef> e-mail / Município</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.email }}
+        <br> {{ element.municipio }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef> Status</mat-header-cell>
+      <mat-cell *matCellDef="let element" title="{{ element.updated_at }}">
+        {{ element.status }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="scores">
+      <mat-header-cell *matHeaderCellDef> Scores</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.Scores }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="enviado">
+      <mat-header-cell *matHeaderCellDef> Enviado</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.dth_envio_edinheiro | date: "dd/MM/yyyy" }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="renda">
+      <mat-header-cell *matHeaderCellDef> Renda Informada</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.total_income | number: "1.2-2" }}<br>
+        <span class="color-red">{{ element.dth_envio_edinheiro | date: "dd/MM/yyyy" }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="datacadastro">
+      <mat-header-cell *matHeaderCellDef> Criado em </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.created_at | date: "dd/MM/yyyy HH:mm:ss" }}<br />{{
+        element.remember_token
+        }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="profile">
+      <mat-header-cell *matHeaderCellDef> Perfil </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.profile }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Acao">
+      <mat-header-cell *matHeaderCellDef> Ação</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button matSuffix mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="atribuirParaMin(element)" *ngIf="service.showAtribuirParaMim" AccessControl
+            [rules]="['admin', 'Agente de Crédito']">
+            <mat-icon>fingerprint</mat-icon>
+            <span>Atribuir para Mim</span>
+          </button>
+          <button mat-menu-item *ngIf="service.showEditarCadastro" (click)="editar(element)" AccessControl
+            [rules]="['admin']">
+            <mat-icon>create</mat-icon>
+            <span>Editar </span>
+          </button>
+          <button mat-menu-item *ngIf="service.showExcluir" (click)="excluir(element)" AccessControl
+            [rules]="['admin']">
+            <mat-icon>delete</mat-icon>
+            <span>Excluir</span>
+          </button>
+          <button mat-menu-item *ngIf="service.showVerificar" (click)="verificar(element)" AccessControl
+            [rules]="['admin']">
+            <mat-icon>check</mat-icon>
+            <span>Verificar</span>
+          </button>
+
+          <button mat-menu-item (click)="corrigir(element)" *ngIf="service.showCorrecaoBasica" AccessControl
+            [rules]="['Ouvidoria', 'admin']">
+            <mat-icon>fingerprint</mat-icon>
+            <span>Corrigir</span>
+          </button>
+          <button mat-menu-item (click)="definirAgente(element)" *ngIf="service.showDefinirAgente" AccessControl
+            [rules]="['Ouvidoria', 'admin', 'Supervisor']">
+            <mat-icon>fingerprint</mat-icon>
+            <span>Definir Agente</span>
+          </button>
+        </mat-menu>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>

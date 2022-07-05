@@ -1,0 +1,144 @@
+<mat-nav-list>
+  <div class="profile-card">
+    <div class="header pointer">
+      <h4>{{ services.UserName }}</h4>
+      <h5>{{ services.UserEmail }}</h5>
+      <h5>{{ services.UserPhone | phone }}</h5>
+      <h5>{{ services.Perfil }}</h5>
+    </div>
+    <img src="assets/images/Brasao.png" alt="CrediCeara" />
+  </div>
+
+  <mat-divider></mat-divider>
+  <div>
+    <h2 matSubheader>Menu Principal</h2>
+    <mat-divider></mat-divider>
+    <a
+      mat-list-item
+      *ngIf="services.showDashboard"
+      AccessControl
+      [rules]="['admin']"
+      [objeto]="'Dashboard'"
+      routerLinkActive="list-item-active"
+      routerLink="/dashboard"
+      >Dashboard
+    </a>
+
+    <mat-divider></mat-divider>
+    <a
+      mat-list-item
+      *ngIf="services.showEmpreendedores"
+      AccessControl
+      [rules]="['admin']"
+      [objeto]="'Empreendedores'"
+      routerLinkActive="list-item-active"
+      routerLink="/cadastros/S"
+      >Apoiados</a
+    >
+
+    <mat-divider> </mat-divider>
+    <a
+      mat-list-item
+      *ngIf="services.showAgentes"
+      AccessControl
+      [rules]="['admin', 'Supervisor']"
+      [objeto]="'Agentes de Crédito'"
+      routerLinkActive="list-item-active"
+      routerLink="/agentes/A"
+      >Usuários</a
+    >   
+
+    <!--mat-divider></mat-divider>
+    <a
+      mat-list-item
+      *ngIf="services.showMeuCadastro"
+      AccessControl
+      [rules]="['citizen']"
+      [objeto]="'Cadastro'"
+      routerLinkActive="list-item-active"
+      routerLink="/cadastro-usuario/{{ services.UserId }}"
+      >Meu Cadastro</a
+    -->
+    <mat-divider></mat-divider>
+    <a
+      mat-list-item
+      *ngIf="services.showMinhaJurisdicao"
+      AccessControl
+      [rules]="['Agent']"
+      [objeto]="'Minha Jurisdição'"
+      routerLinkActive="list-item-active"
+      routerLink="/minha-jurisdicao"
+      >Minha Jurisdição</a
+    >
+    <mat-divider></mat-divider>
+    <a
+      mat-list-item
+      *ngIf="services.showCadastros"
+      AccessControl
+      [rules]="['admin', 'Supervisor', 'Agente', 'Ouvidoria']"
+      [objeto]="'Cadastro'"
+      routerLinkActive="list-item-active"
+      routerLink="/cadastros/T"
+      >Cadastros</a
+    >
+
+    <mat-divider></mat-divider>
+    <a
+      mat-list-item
+      *ngIf="services.showDominios"
+      AccessControl
+      [rules]="['admin']"
+      [objeto]="'Testes Integração'"
+      routerLinkActive="list-item-active"
+      routerLink="/dominios"
+      >Domínios</a
+    >
+    <mat-divider></mat-divider>
+    <a
+      mat-list-item
+      *ngIf="services.showFaleConosco"
+      AccessControl
+      [rules]="['admin', 'Ouvidoria']"
+      [objeto]="'Fale Conosco'"
+      routerLinkActive="list-item-active"
+      routerLink="/fale-conosco-list"
+      >Fale Conosco</a
+    >
+    <mat-divider></mat-divider>
+    <a
+      mat-list-item
+      *ngIf="services.showJurisdicoes"
+      AccessControl
+      [rules]="['admin', 'Supervisor', 'Agente']"
+      [objeto]="'Jurisdições'"
+      routerLinkActive="list-item-active"
+      routerLink="/jurisdicoes"
+      >Jurisdições</a
+    >
+    <mat-divider></mat-divider>
+    <a
+      mat-list-item
+      *ngIf="services.showCeps"
+      AccessControl
+      [rules]="['admin']"
+      [objeto]="'Ceps Cadastrados'"
+      routerLinkActive="list-item-active"
+      routerLink="/ceps-cadastrados"
+      >Ceps Cadastrados</a
+    >
+    <mat-divider></mat-divider>
+    <a
+      mat-list-item
+      *ngIf="services.showTestesIntegracao"
+      AccessControl
+      [rules]="['admin']"
+      [objeto]="'Testes Integração'"
+      routerLinkActive="list-item-active"
+      routerLink="/testes-integracao"
+      >Testes de Integração</a
+    >
+    <a mat-list-item routerLinkActive="list-item-active" (click)="logout()"
+      >Sair / Logout</a
+    >
+  </div>
+</mat-nav-list>

@@ -1,0 +1,190 @@
+<div class="example-container mat-elevation-z8" style="border-radius: 10px">
+  <div style="width: 100%; z-index: 5">
+    <h1>{{ titulo }}</h1>
+  </div>
+  <br />
+  <div class="container" fxLayout="row wrap">
+    <mat-form-field fxFlex="40">
+      <input
+        matInput
+        (keyup)="applyFilter($event.target.value)"
+        placeholder="Filter"
+      />
+    </mat-form-field>
+    <mat-icon class="pointer" fxFlex="2" title="search" (click)="search()"
+      >search</mat-icon
+    >
+    <mat-paginator
+      #paginator
+      fxFlex
+      style="z-index: 5"
+      [pageSize]="10"
+      showFirstLastButtons
+      [pageSizeOptions]="[5, 10, 20, 100]"
+    >
+    </mat-paginator>
+    <mat-icon
+      class="pointer"
+      matSuffix
+      fxFlex="2"
+      title="Refresh"
+      (click)="refresh()"
+      >refresh</mat-icon
+    >
+  </div>
+  <mat-table #table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> Id</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.crediceara_id }}</mat-cell
+      >
+    </ng-container>
+    <ng-container matColumnDef="cpf">
+      <mat-header-cell *matHeaderCellDef> CPF</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.cpf }}<br />
+        {{ element.profile }}</mat-cell
+      >
+    </ng-container>
+    <ng-container matColumnDef="nomeCidadao">
+      <mat-header-cell *matHeaderCellDef> Nome</mat-header-cell>
+      <mat-cell *matCellDef="let element" title="{{ element.password }}">
+        {{ element.nomeCidadao }}<br />Mãe: {{ element.nomeMae }}</mat-cell
+      >
+    </ng-container>
+
+    <ng-container matColumnDef="foneCelular">
+      <mat-header-cell *matHeaderCellDef> Fone Celular</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.foneCelular | phone }}</mat-cell
+      >
+    </ng-container>
+
+    <ng-container matColumnDef="sexo">
+      <mat-header-cell *matHeaderCellDef> Sexo</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.sexo }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef> e-mail / Município</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.email }}
+        <label style="width: 100%" *ngIf="element.status === 'Verificado'">
+          / {{ element.municipio }}</label
+        >
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef> Status</mat-header-cell>
+      <mat-cell *matCellDef="let element" title="{{ element.updated_at }}">
+        {{ element.status }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="scores">
+      <mat-header-cell *matHeaderCellDef> Scores</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.Scores }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="enviado">
+      <mat-header-cell *matHeaderCellDef> Enviado</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.DataEnvio | date: "dd/MM/yyyy" }}</mat-cell
+      >
+    </ng-container>
+    <ng-container matColumnDef="renda">
+      <mat-header-cell *matHeaderCellDef> Renda Informada</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.renda_total_mensal | number: "1.2-2" }}</mat-cell
+      >
+    </ng-container>
+
+    <ng-container matColumnDef="datacadastro">
+      <mat-header-cell *matHeaderCellDef> Criado em </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.created_at | date: "dd/MM/yyyy HH:mm:ss" }}<br />{{
+          element.remember_token
+        }}</mat-cell
+      >
+    </ng-container>
+
+    <ng-container matColumnDef="profile">
+      <mat-header-cell *matHeaderCellDef> Perfil </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.profile }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Acao">
+      <mat-header-cell *matHeaderCellDef> Ação</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button matSuffix mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button
+            mat-menu-item
+            *ngIf="service.showEditarCadastro"
+            (click)="editar(element)"
+            AccessControl
+            [rules]="['admin']"
+          >
+            <mat-icon>create</mat-icon>
+            <span>Editar </span>
+          </button>
+          <button
+            mat-menu-item
+            *ngIf="service.showExcluir"
+            (click)="excluir(element)"
+            AccessControl
+            [rules]="['admin']"
+          >
+            <mat-icon>delete</mat-icon>
+            <span>Excluir</span>
+          </button>
+          <button
+            mat-menu-item
+            *ngIf="service.showVerificar"
+            (click)="verificar(element)"
+            AccessControl
+            [rules]="['admin']"
+          >
+            <mat-icon>check</mat-icon>
+            <span>Verificar</span>
+          </button>
+          <button
+          mat-menu-item
+          *ngIf="service.showResetPassword"
+          (click)="resetPassword(element)"
+          AccessControl
+          [rules]="['admin']"
+        >
+          <mat-icon>check</mat-icon>
+          <span>Reset de senha</span>
+        </button>
+          
+          <button
+            mat-menu-item
+            (click)="corrigir(element)"
+            *ngIf="service.showCorrecaoBasica"
+            AccessControl
+            [rules]="['Ouvidoria', 'admin']"
+          >
+            <mat-icon>fingerprint</mat-icon>
+            <span>Corrigir</span>
+          </button>
+          <button
+            mat-menu-item
+            (click)="alterarPerfil(element)"
+            *ngIf="service.showAlterarPerfil"
+            AccessControl
+            [rules]="['admin']"
+          >
+            <mat-icon>fingerprint</mat-icon>
+            <span>Alterar Perfil</span>
+          </button>
+        </mat-menu>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row
+      *matHeaderRowDef="displayedColumns; sticky: true"
+    ></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>

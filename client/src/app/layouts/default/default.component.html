@@ -1,0 +1,12 @@
+<!-- <app-header ></app-header> -->
+<app-header (toggleSideBarForMe)="sideBarToggler()"></app-header>
+<mat-drawer-container>
+  <mat-drawer mode="side" [opened]="service.sideBarOpen">
+    <app-sidebar></app-sidebar>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>
+<img style="z-index: -5" src="../../../../assets/images/ondas2.8bf82fc.png" />
+<!--app-footer></app-footer-->

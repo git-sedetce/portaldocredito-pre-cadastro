@@ -1,0 +1,231 @@
+<div
+  class="min-h-screen flex flex-col sm:justify-top items-center pt-6 sm:pt-0"
+>
+  <div class="w-full bg-white shadow-md overflow-hidden rounded-lg">
+    <div class="example-container" fxLayout="row wrap" [formGroup]="formGroup">
+      <div fxFlex>
+        <span class="conhecendo-voce">Definição de Jurisdições</span>
+        <div class="quadro-cadastro-dados-interno">
+          <div class="container" fxLayout="row wrap">
+            <div fxLayout="row wrap" class="container">
+              <mat-form-field fxFlex class="max-300">
+                <mat-select
+                  placeholder="Região de Planejamento"
+                  formControlName="RegiaoId"
+                  required
+                >
+                  <mat-option *ngFor="let item of regioes" [value]="item.id">
+                    {{ item.texto }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex="1"></div>
+              <mat-form-field fxFlex class="max-300">
+                <mat-select
+                  placeholder="Município Sede"
+                  formControlName="SedeId"
+                  required
+                >
+                  <mat-option *ngFor="let item of sedes" [value]="item.id">
+                    {{ item.texto }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex="1"></div>
+              <mat-form-field fxFlex class="max-300">
+                <mat-select
+                  placeholder="Posto Responsável"
+                  formControlName="PostoId"
+                  required
+                >
+                  <mat-option *ngFor="let item of postos" [value]="item.id">
+                    {{ item.texto }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex="1"></div>
+              <mat-form-field fxFlex class="max-300">
+                <mat-select
+                  placeholder="Supervisor"
+                  formControlName="SupervisorId"
+                  required
+                >
+                  <mat-option
+                    required
+                    *ngFor="let item of supervisores"
+                    [value]="item.id"
+                  >
+                    {{ item.texto }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button matSuffix mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>menu</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button
+                  mat-menu-item
+                  *ngIf="service.showNovaJurisdicao"
+                  (click)="save(formGroup.value)"
+                  AccessControl
+                  [rules]="['admin']"
+                >
+                  <mat-icon>save</mat-icon>
+                  <span>Gravar Novo </span>
+                </button>
+                <button
+                  mat-menu-item
+                  *ngIf="service.showExcluir"
+                  (click)="buscar()"
+                  AccessControl
+                  [rules]="['admin']"
+                >
+                  <mat-icon>search</mat-icon>
+                  <span>Buscar</span>
+                </button>
+                <button
+                  mat-menu-item
+                  *ngIf="service.showVerificar"
+                  (click)="excluir()"
+                  AccessControl
+                  [rules]="['admin']"
+                >
+                  <mat-icon>delete</mat-icon>
+                  <span>Excluir</span>
+                </button>
+              </mat-menu>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="example-container mat-elevation-z8" style="border-radius: 10px">
+      <div style="width: 100%; z-index: 5">
+        <h2>Desempenho por Hora</h2>
+      </div>
+      <div class="container" fxLayout="row wrap">
+        <mat-form-field fxFlex="40">
+          <input
+            matInput
+            (keyup)="applyFilter($event.target.value)"
+            placeholder="Filter"
+          />
+        </mat-form-field>
+        <mat-icon class="pointer" fxFlex="2" title="search" (click)="search()"
+          >search</mat-icon
+        >
+        <mat-paginator
+          #paginator
+          fxFlex
+          style="z-index: 5"
+          [pageSize]="10"
+          showFirstLastButtons
+          [pageSizeOptions]="[5, 10, 20, 100]"
+        >
+        </mat-paginator>
+        <mat-icon
+          class="pointer"
+          matSuffix
+          fxFlex="2"
+          title="Refresh"
+          (click)="refresh()"
+          >refresh</mat-icon
+        >
+      </div>
+      <mat-table *ngIf="dataSource" #table [dataSource]="dataSource">
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef> Id</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.id }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef>
+            Região de Planejamento</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element"> {{ element.regional }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="sede">
+          <mat-header-cell *matHeaderCellDef> Município Sede</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.sede }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="posto">
+          <mat-header-cell *matHeaderCellDef> Posto</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{ element.posto }}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="supervisor">
+          <mat-header-cell *matHeaderCellDef> Supervisor</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{ element.supervisorname }}</mat-cell
+          >
+        </ng-container>
+        <ng-container matColumnDef="locais">
+          <mat-header-cell *matHeaderCellDef> Locais</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.locais }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="agentes">
+          <mat-header-cell *matHeaderCellDef> Agentes</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.agentes }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="clientes">
+          <mat-header-cell *matHeaderCellDef> Clientes</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.clientes }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="acao">
+          <mat-header-cell *matHeaderCellDef> Ações</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button matSuffix mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>menu</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button
+                mat-menu-item
+                (click)="editar(element)"
+                AccessControl
+                [rules]="['admin']"
+              >
+                <mat-icon>create</mat-icon>
+                <span>Editar </span>
+              </button>
+              <button
+                mat-menu-item
+                (click)="excluir(element)"
+                AccessControl
+                [rules]="['admin']"
+              >
+                <mat-icon>delete</mat-icon>
+                <span>Excluir</span>
+              </button>
+              <button
+                mat-menu-item
+                (click)="addLocais(element)"
+                AccessControl
+                [rules]="['admin']"
+              >
+                <mat-icon>add</mat-icon>
+                <span>Incluir Locais</span>
+              </button>
+
+              <button
+                mat-menu-item
+                (click)="addAgentes(element)"
+                AccessControl
+                [rules]="['Ouvidoria', 'admin']"
+              >
+                <mat-icon>add</mat-icon>
+                <span>Incluir Agentes</span>
+              </button>
+            </mat-menu>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</div>

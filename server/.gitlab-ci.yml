@@ -1,0 +1,12 @@
+"deploy server":
+  image: evertonildo/evertonildo-hub:serverless-awscli #node:latest
+  stage: deploy
+  script:
+    - cd server
+    #- npm install -g serverless
+    - yarn
+    - serverless deploy --stage $CI_COMMIT_REF_NAME
+  only:
+    refs:
+      - hom
+      - prod

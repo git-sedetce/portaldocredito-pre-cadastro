@@ -1,0 +1,38 @@
+<div class="example-container mat-elevation-z8" [formGroup]="formGroup">
+  <h1 mat-dialog-title i18n>Bem vindo</h1>
+  <div mat-dialog-content>
+    <p>{{ texto }}</p>
+    <div class="container">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="CPF" formControlName="cpf" />
+      </mat-form-field>
+    </div>
+    <div class="container">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Código" formControlName="codigo" />
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" i18n>Cancelar </button>
+    <button
+      class="pointer"
+      mat-button
+      (click)="onClick(formGroup.value)"
+      cdkFocusInitial
+      i18n
+    >
+      Entrar </button
+    >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <button 
+      class="pointer"
+      style="left: 90%; position: sticky"
+      mat-button
+      (click)="noCode(formGroup.value)"
+      cdkFocusInitial
+      i18n
+    >
+      Re-enviar
+  </button>
+  </div>
+</div>

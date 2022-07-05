@@ -1,0 +1,72 @@
+<div class="example-container mat-elevation-z8" style="border-radius: 10px">
+  <div style="width: 100%; z-index: 5">
+    <h2>DesempenhoFale Conosco</h2>
+  </div>
+  <div class="container" fxLayout="row wrap">
+    <mat-form-field fxFlex="40">
+      <input
+        matInput
+        (keyup)="applyFilter($event.target.value)"
+        placeholder="Filter"
+      />
+    </mat-form-field>
+    <mat-icon class="pointer" fxFlex="2" title="search" (click)="search()"
+      >search</mat-icon
+    >
+    <mat-paginator
+      #paginator
+      fxFlex
+      style="z-index: 5"
+      [pageSize]="10"
+      showFirstLastButtons
+      [pageSizeOptions]="[5, 10, 20, 100]"
+    >
+    </mat-paginator>
+    <mat-icon
+      class="pointer"
+      matSuffix
+      fxFlex="2"
+      title="Refresh"
+      (click)="refresh()"
+      >refresh</mat-icon
+    >
+  </div>
+  <mat-table *ngIf="dataSource" #table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> Id</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.id }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Cidadão</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.name }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="cpf">
+      <mat-header-cell *matHeaderCellDef> CPF</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.cpf }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef> e-mail</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.email }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="subject">
+      <mat-header-cell *matHeaderCellDef> Assunto</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.subject }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="phone_number">
+      <mat-header-cell *matHeaderCellDef> Celular</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.phone_number }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="descrition">
+      <mat-header-cell *matHeaderCellDef> Descrição</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.descrition }}
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row
+      *matHeaderRowDef="displayedColumns; sticky: true"
+    ></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>

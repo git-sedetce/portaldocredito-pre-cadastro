@@ -1,0 +1,80 @@
+.stats-cards {
+  .mat-card {
+    overflow: hidden;
+  }
+}
+
+table {
+  width: 100%;
+}
+
+.box-title {
+  font-size: 22px;
+  background: linear-gradient(90deg, #204d37, #00853b 40%);
+  color: white;
+  width: 100%;
+  text-align: center;
+  border-radius: 10px;
+  height: 41px;
+  margin-bottom: 20px;
+}
+
+.div-40 {
+  width: 40%;
+}
+.div-60 {
+  width: 60%;
+}
+
+.title {
+  font-size: 1.2rem;
+  color: #000;
+  color: var(--title-3-color);
+  font-weight: 700;
+}
+.register-container {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.example-card {
+  width: 100%;
+  max-width: 400px;
+}
+
+.register-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-gap: 20px;
+  gap: 20px;
+  background-color: #fff;
+  background-color: var(--app-background-color-3);
+  box-shadow: 0 3px 5px rgb(0 0 0 / 16%);
+  box-shadow: 0 3px 5px var(--shadow-color);
+  border-radius: 5px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  color: #80c470;
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+.mobile40 {
+  width: 100%;
+  max-width: 400px;
+}
+
+fieldset {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+

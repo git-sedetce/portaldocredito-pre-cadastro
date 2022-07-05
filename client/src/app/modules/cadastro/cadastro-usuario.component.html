@@ -1,0 +1,763 @@
+<div
+  class="
+    min-h-screen
+    flex flex-col
+    sm:justify-top
+    items-center
+    pt-6
+    sm:pt-0
+    bg-gray-100
+  "
+>
+  <div class="w-full bg-white shadow-md overflow-hidden rounded-lg">
+    <div class="example-container" fxLayout="row wrap" [formGroup]="formGroup">
+      <div fxFlex>
+        <span class="conhecendo-voce">Conhecendo Você</span>
+        <span class="conhecendo-voce-texto"
+          >Cadastre-se para ter acesso aos benefícios do CREDI CEARÁ.</span
+        >
+      </div>
+      <div fxFlex class="quadro-cadastro-dados" #dadosUsuario>
+        <div class="quadro-cadastro-dados-interno">
+          <div class="container row" fxLayout="row wrap" style="height: 115px">
+            <div fxFlex="99">
+              <div fxFlex>
+                <button class="circulo-ativo">1</button>
+              </div>
+              <div fxFlex class="linha-azul"></div>
+              <div fxFlex>
+                <button
+                  [ngClass]="{
+                    'circulo-inativo': pagina === 1,
+                    'circulo-ativo': pagina > 1
+                  }"
+                >
+                  2
+                </button>
+              </div>
+              <div fxFlex class="linha-azul"></div>
+              <div fxFlex>
+                <button
+                  [ngClass]="{
+                    'circulo-ativo': pagina > 2,
+                    'circulo-inativo': [1, 2].indexOf(pagina) > -1
+                  }"
+                >
+                  3
+                </button>
+              </div>
+              <mat-slide-toggle
+                matSuffix
+                *ngIf="
+                  ['admin', 'Supervisor', 'Agente de Crédito', 'Coordenador', 'Gerente Operacional'].indexOf(
+                    service.Perfil
+                  ) !== -1
+                "
+                formControlName="PaginaUnica"
+                >Mostrar em página única</mat-slide-toggle
+              >
+              <!--mat-icon
+                *ngIf="service.Perfil === 'admin'"
+                (click)="PrintElem(dadosUsuario)"
+                >print</mat-icon
+              -->
+            </div>
+            <div fxFlex="99">
+              <div fxFlex="22">
+                <label class="titulo-interno">Dados Pessoais</label>
+              </div>
+              <div fxFlex="26">
+                <label
+                  [ngClass]="{
+                    'titulo-interno-inativo': pagina === 1,
+                    'titulo-interno': pagina > 1
+                  }"
+                  >Caracteristicas Pessoais</label
+                >
+              </div>
+              <div fxFlex="22">
+                <label
+                  [ngClass]="{
+                    'titulo-interno': pagina > 2,
+                    'titulo-interno-inativo': [1, 2].indexOf(pagina) > -1
+                  }"
+                  >Dados do Negócio</label
+                >
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="container"
+            fxLayout="row wrap"
+            *ngIf="formGroup.value.PaginaUnica || pagina === 1"
+          >
+            <!--h1 class="box-title">Dados Pessoais</h1-->
+            <div fxLayout="row wrap" class="container">
+              <mat-form-field fxFlex>
+                <input
+                  matInput
+                  (enter)="
+                    service.setHelper(
+                      'Informe seu nome completo, sem abreviações. Quanto mais exatos os dados mais fácil será a aprovação do seu cadastro'
+                    )
+                  "
+                  formControlName="Nome"
+                  placeholder="Qual o seu Nome Completo?"
+                  required
+                />
+              </mat-form-field>
+              <div fxFlex="99"></div>
+              <mat-form-field class="max-300" fxFlex>
+                <input
+                  matInput
+                  (enter)="
+                    service.setHelper(
+                      'Caso você tenha um nome social (Lei 8.727/2016) informe-o aqui para que os nossos agentes de crédito possam chamá-lo por ele.'
+                    )
+                  "
+                  formControlName="NomeSocial"
+                  placeholder="Nome Social (Como é conhecido)"
+                />
+              </mat-form-field>
+
+              <div fxFlex="1"></div>
+              <mat-form-field fxFlex class="max-300">
+                <mat-select formControlName="Sexo" placeholder="Sexo" required>
+                  <mat-option [value]="'F'">Feminino </mat-option>
+                  <mat-option [value]="'M'">Masculino </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex="99"></div>
+
+              <mat-form-field fxFlex class="max-300">
+                <input
+                  matInput
+                  formControlName="NomeMae"
+                  placeholder="Nome da Mãe"
+                  required
+                />
+              </mat-form-field>
+              <div fxFlex="1"></div>
+              <mat-form-field fxFlex class="max-300">
+                <input
+                  matInput
+                  (blur)="calculaIdade()"
+                  (enter)="
+                    service.setHelper(
+                      'Informe a data de nascimento que consta em seus documentos'
+                    )
+                  "
+                  formControlName="DataNascimento"
+                  placeholder="Data de Nascimento {{
+                    idade > 0 ? idade + ' anos' : null
+                  }}"
+                  appDateMask
+                  required
+                />
+              </mat-form-field>
+              <div fxFlex="1"></div>
+              <mat-slide-toggle
+                (change)="tgEmancipado($event.checked)"
+                fxFlex
+                class="example-margin max-300"
+                [color]="color"
+                [checked]="emancipado"
+              >
+                Você é legalmente Emancipado? {{ emancipado ? "Sim" : "Não" }}
+              </mat-slide-toggle>
+              <div fxFlex="99"></div>
+              <mat-form-field fxFlex class="max-300">
+                <input
+                  matInput
+                  formControlName="RG"
+                  placeholder="RG"
+                  required
+                />
+              </mat-form-field>
+              <div fxFlex="1"></div>
+              <mat-form-field fxFlex class="max-300">
+                <input
+                  matInput
+                  #cpf
+                  appCPFMask
+                  formControlName="CPF"
+                  placeholder="CPF {{
+                    service.isCPF(cpf.value) ? 'Válido' : 'Inválido'
+                  }}"
+                  required
+                />
+              </mat-form-field>
+              <div fxFlex="99"></div>
+              <mat-form-field fxFlex class="max-300">
+                <input
+                  matInput
+                  appPhoneMask
+                  formControlName="Celular"
+                  placeholder="Qual o seu contato de Celular (Incluir o DDD)"
+                  required
+                />
+              </mat-form-field>
+              <!--div fxFlex="1"></div>
+            <mat-form-field fxFlex="30">
+              <mat-select
+                placeholder="Qual seu contato de celular?"
+                formControlName="CelularProprioId"
+                required
+              >
+                <mat-option
+                  *ngFor="let celular of situacaoCelular"
+                  [value]="celular.id"
+                >
+                  {{ celular.texto }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field-->
+              <div fxFlex="1"></div>
+              <mat-form-field fxFlex class="max-300">
+                <input
+                  matInput
+                  type="email"
+                  formControlName="eMail"
+                  placeholder="Qual é seu e-mail"
+                  required
+                />
+              </mat-form-field>
+              <h1 fxFlex="99" class="titulo-interno">Endereço</h1>
+              <mat-form-field fxFlex class="max-300">
+                <input
+                  matInput
+                  (blur)="consultaCEP(cep.value)"
+                  #cep
+                  formControlName="CEP"
+                  placeholder="CEP"
+                  required
+                />
+              </mat-form-field>
+              <div fxFlex="99"></div>
+
+              <mat-form-field fxFlex class="max-300">
+                <input
+                  matInput
+                  formControlName="Endereco"
+                  placeholder="Endereço Residêncial (logradouro, número e complemento)"
+                />
+              </mat-form-field>
+              <div fxFlex="1"></div>
+              <mat-form-field fxFlex class="max-300">
+                <input
+                  matInput
+                  formControlName="EnderecoNumero"
+                  placeholder="Número"
+                  required
+                />
+              </mat-form-field>
+              <div fxFlex="99"></div>
+              <mat-form-field fxFlex class="max-300">
+                <input
+                  matInput
+                  formControlName="EnderecoComplemento"
+                  placeholder="Complemento"
+                  required
+                />
+              </mat-form-field>
+
+              <div fxFlex="1"></div>
+              <mat-form-field fxFlex class="max-300">
+                <input
+                  matInput
+                  formControlName="Bairro"
+                  required
+                  placeholder="Bairro"
+                />
+              </mat-form-field>
+
+              <div fxFlex="99"></div>
+              <mat-form-field fxFlex class="max-300">
+                <mat-select
+                  placeholder="Minha residência é"
+                  formControlName="CasaPropria"
+                  required
+                >
+                  <mat-option
+                    *ngFor="let item of tipoResidencia"
+                    [value]="item.id"
+                  >
+                    {{ item.texto }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex=""></div>
+              <mat-form-field fxFlex class="max-300">
+                <mat-select
+                  placeholder="Município"
+                  formControlName="MunicipioId"
+                  required
+                >
+                  <mat-option
+                    title="{{ cidade.parent }}"
+                    required
+                    *ngFor="let cidade of cidades"
+                    [value]="cidade.id"
+                  >
+                    {{ cidade.texto }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <!--div class="container end">
+            <button
+              *ngIf="pagina > 1"
+              (click)="salvar(pagina - 1)"
+              class="button-prior"
+            >
+              Anterior
+            </button>
+            <button (click)="salvar(pagina + 1)" class="button-next">
+              {{ pagina > 3 ? "Próximo" : "Finalizar" }}
+            </button>
+          </div-->
+          </div>
+          <div
+            class="container"
+            fxLayout="row wrap"
+            *ngIf="formGroup.value.PaginaUnica || pagina === 2"
+          >
+            <div fxLayout="row wrap" class="container">
+              <mat-form-field fxFlex class="max-300">
+                <mat-select
+                  placeholder="Estado Civil"
+                  formControlName="EstadoCivil"
+                  required
+                >
+                  <mat-option
+                    *ngFor="let item of estadoCivil"
+                    [value]="item.domain_flg"
+                  >
+                    {{ item.texto }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex="1"></div>
+              <mat-form-field fxFlex class="max-300">
+                <mat-select
+                  placeholder="Grau de Instrução"
+                  formControlName="GrauInstrucao"
+                  required
+                >
+                  <mat-option [value]="item.id" *ngFor="let item of instrucoes">
+                    {{ item.texto }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex="99"></div>
+              <mat-form-field fxFlex class="max-300">
+                <mat-select
+                  placeholder="Ocupação"
+                  (selectionChange)="selecaoOcupacao($event.value)"
+                  formControlName="OcupacaoId"
+                  required
+                >
+                  <mat-option
+                    title="{{ item.texto }}"
+                    [value]="item.id"
+                    *ngFor="let item of ocupacoes"
+                  >
+                    {{ item.texto }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex="1"></div>
+              <mat-form-field fxFlex class="max-300">
+                <input
+                  matInput
+                  type="number"
+                  formControlName="RendaBruta"
+                  placeholder="Renda Mensal (não precisa informar centavos)"
+                />
+              </mat-form-field>
+
+              <div class="linha" fxFlex="99">
+                <mat-form-field fxFlex>
+                  <input
+                    matInput
+                    formControlName="ReferenciasPessoais"
+                    placeholder="Nome e telefone de pessoas próximas / conhecidas"
+                    required
+                  />
+                </mat-form-field>
+              </div>
+              <div class="linha" fxFlex="99"></div>
+              <div fxFlex="99" class="max-300" style="height: 40px">
+                <label fxFlex>Possui dependentes?</label>
+                <mat-radio-group
+                  fxFlex="25"
+                  formControlName="PossuiDependentes"
+                >
+                  <mat-radio-button [value]="'S'">Sim</mat-radio-button>&nbsp;
+                  <mat-radio-button [value]="'N'">Não</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="99"></div>
+              <mat-form-field
+                fxFlex
+                *ngIf="formGroup.value.PossuiDependentes === 'S'"
+              >
+                <input
+                  matInput
+                  type="number"
+                  formControlName="QtdDependentes"
+                  placeholder="Total Dependentes"
+                />
+              </mat-form-field>
+              <div fxFlex="99">&nbsp;</div>
+              <div fxFlex="99" class="max-300" style="height: 40px">
+                <label fxFlex class="w30pct">Declara imposto Renda?</label>
+                <mat-radio-group fxFlex="25" formControlName="DeclaraIR">
+                  <mat-radio-button [value]="'S'">Sim</mat-radio-button>&nbsp;
+                  <mat-radio-button [value]="'N'">Não</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="99">&nbsp;</div>
+              <div fxFlex="99" class="max-300" style="height: 40px">
+                <label fxFlex class="w30pct">Possui Conta Bancária?</label>
+                <mat-radio-group
+                  fxFlex="25"
+                  formControlName="PossuiContaBancaria"
+                >
+                  <mat-radio-button [value]="'S'">Sim</mat-radio-button>&nbsp;
+                  <mat-radio-button [value]="'N'">Não</mat-radio-button>
+                </mat-radio-group>
+                <div fxFlex="1"></div>
+              </div>
+              <div fxFlex="99"></div>
+              <mat-form-field
+                *ngIf="formGroup.value.PossuiContaBancaria === 'S'"
+                fxFlex
+                class="max-300"
+              >
+                <input
+                  matInput
+                  type="number"
+                  formControlName="ContaBancaria"
+                  placeholder="Conta Bancária"
+                />
+              </mat-form-field>
+              <div fxFlex="99" class="max-300" style="height: 40px">
+                <label fxFlex class="w30pct">Possui CADUNICO?</label>
+                <mat-radio-group
+                  fxFlex="25"
+                  formControlName="InscricaoCADUNICO"
+                >
+                  <mat-radio-button [value]="'S'">Sim</mat-radio-button>&nbsp;
+                  <mat-radio-button [value]="'N'">Não</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="99">&nbsp;</div>
+              <div fxFlex="99" class="max-300" style="height: 40px">
+                <label fxFlex class="w30pct">Possui Deficiência?</label>
+                <mat-radio-group fxFlex="25" formControlName="TemDeficiancia">
+                  <mat-radio-button [value]="'S'">Sim</mat-radio-button>&nbsp;
+                  <mat-radio-button [value]="'N'">Não</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="99">&nbsp;</div>
+              <div fxFlex="99" class="max-300" style="height: 40px">
+                <label fxFlex class="w30pct">É chefe de família?</label>
+                <mat-radio-group fxFlex="25" formControlName="ChefeFamilia">
+                  <mat-radio-button [value]="'S'">Sim</mat-radio-button>&nbsp;
+                  <mat-radio-button [value]="'N'">Não</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="99">&nbsp;</div>
+              <div
+                fxFlex="99"
+                class="max-300"
+                *ngIf="formGroup.value.Sexo === 'F'"
+                style="height: 40px"
+              >
+                <label fxFlex class="w30pct">É vítima de violência?</label>
+                <mat-radio-group fxFlex="25" formControlName="VitimaViolencia">
+                  <mat-radio-button [value]="'S'">Sim</mat-radio-button>&nbsp;
+                  <mat-radio-button [value]="'N'">Não</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="99">&nbsp;</div>
+              <div fxFlex="99" class="max-300" style="height: 40px">
+                <label fxFlex class="w30pct"
+                  >É egresso do sistema prisional?</label
+                >
+                <mat-radio-group fxFlex="25" formControlName="Egresso">
+                  <mat-radio-button [value]="'S'">Sim</mat-radio-button>&nbsp;
+                  <mat-radio-button [value]="'N'">Não</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="99">&nbsp;</div>
+              <h1
+                fxFlex="99"
+                class="max-300"
+                style="height: 70px"
+                class="titulo-interno"
+              >
+                Programas Sociais que Participa
+              </h1>
+              <div
+                fxFlex
+                class="max-300"
+                style="height: 40px"
+                *ngFor="let item of programasSociais"
+              >
+                <div fxFlex="99">&nbsp;</div>
+                <mat-checkbox
+                  [checked]="item.flg"
+                  (change)="checkChange($event, item)"
+                >
+                  {{ item.texto }}
+                </mat-checkbox>
+              </div>
+              <div fxFlex="99">&nbsp;</div>
+            </div>
+          </div>
+          <div
+            class="container"
+            fxLayout="row wrap"
+            *ngIf="formGroup.value.PaginaUnica || pagina === 3"
+          >
+            <div fxLayout="row wrap" class="container">
+              <div fxFlex class="max-300" style="height: 40px">
+                <label fxFlex>Possui negócio próprio?</label>
+                <mat-radio-group fxFlex="25" formControlName="PossuiNegocio">
+                  <mat-radio-button [value]="'S'">Sim</mat-radio-button>&nbsp;
+                  <mat-radio-button [value]="'N'">Não</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div fxFlex="1"></div>
+              <mat-form-field
+                *ngIf="formGroup.value.PossuiNegocio === 'S'"
+                fxFlex
+                class="max-300"
+              >
+                <mat-select
+                  placeholder="{{
+                    formGroup.value.PossuiNegocio === 'S'
+                      ? 'Qual a atividade do negócio'
+                      : 'Como deseja empreender'
+                  }}"
+                  formControlName="FormaEmpreendimentoId"
+                >
+                  <mat-option
+                    [value]="item.id"
+                    *ngFor="let item of formasEmpreendimentos"
+                  >
+                    {{ item.texto }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex="1"></div>
+              <mat-form-field fxFlex *ngIf="possuiNegocio" class="max-300">
+                <mat-select
+                  placeholder="Qual a forma do negócio"
+                  formControlName="FormaEmpreendimentoId"
+                >
+                  <mat-option
+                    [value]="item.id"
+                    *ngFor="let item of atividadesEmpreendimentos"
+                  >
+                    {{ item.texto }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+
+              <div fxFlex="99">&nbsp;</div>
+              <div fxFlex="1"></div>
+              <mat-form-field *ngIf="ehMEI" fxFlex class="max-300">
+                <input
+                  matInput
+                  type="number"
+                  formControlName="CNPJMEI"
+                  placeholder="CNPJ do MEI"
+                />
+              </mat-form-field>
+
+              <div fxFlex="1"></div>
+              <mat-form-field fxFlex class="max-300">
+                <mat-select
+                  placeholder="{{
+                    formGroup.value.PossuiNegocio === 'S'
+                      ? 'Quantas pessoas atualmente?'
+                      : 'Quantas pessoas trabalharão?'
+                  }}"
+                  formControlName="QuantoEmpregados"
+                >
+                  <mat-option
+                    [value]="item.id"
+                    *ngFor="let item of qtdFuncionarios"
+                  >
+                    {{ item.texto }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex="99"></div>
+              <mat-form-field fxFlex class="max-300">
+                <mat-select
+                  placeholder="Onde será seu negocio?"
+                  formControlName="OndeENegocio"
+                >
+                  <mat-option [value]="item.id" *ngFor="let item of AondeSera">
+                    {{ item.texto }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex="99"></div>
+              <mat-form-field *ngIf="!possuiNegocio" class="max-300">
+                <textarea
+                  matInput
+                  formControlName="ComoSera"
+                  placeholder="Como será o negócio"
+                ></textarea>
+              </mat-form-field>
+              <h1 fxFlex="99" class="titulo-interno">Necessidade de Crédito</h1>
+              <mat-form-field fxFlex class="max-300">
+                <mat-select
+                  placeholder="Qual objetivo do crédito?"
+                  formControlName="ObjetivoEmprestimoId"
+                >
+                  <mat-option
+                    [value]="item.id"
+                    *ngFor="let item of objetivosCredito"
+                  >
+                    {{ item.texto }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex="1"></div>
+              <mat-form-field fxFlex class="max-300">
+                <mat-select
+                  placeholder="Tipo de Financiamento?"
+                  formControlName="TipoFinanciamentoId"
+                >
+                  <mat-option
+                    [value]="item.id"
+                    *ngFor="let item of tiposFinanciamentos"
+                  >
+                    {{ item.texto }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex="1"></div>
+              <mat-slide-toggle
+                (change)="tgPossuiEmprestimo($event.checked)"
+                fxFlex
+                class="max-300 example-margin"
+                [color]="color"
+                [checked]="possuiEmprestimo"
+              >
+                Possui Empréstimo? {{ possuiEmprestimo ? "Sim" : "Não" }}
+              </mat-slide-toggle>
+              <div fxFlex="1"></div>
+              <mat-form-field *ngIf="possuiEmprestimo" fxFlex class="max-300">
+                <mat-select
+                  placeholder="Qual a instituição tomou empréstimo?"
+                  (selectionChange)="selecionadoInstituicao($event.value)"
+                  formControlName="InstituicaoDoEmprestimoId"
+                >
+                  <mat-option
+                    [value]="item.id"
+                    *ngFor="let item of instituicoes"
+                  >
+                    {{ item.texto }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex="1"></div>
+              <mat-form-field *ngIf="showOther" fxFlex class="max-300">
+                <input
+                  matInput
+                  formControlName="InstituicaoOutra"
+                  placeholder="Qual Instituição?"
+                />
+              </mat-form-field>
+
+              <h1 fxFlex="99" class="max-300 titulo-interno">
+                Necessidade de Capacitação
+              </h1>
+
+              <mat-slide-toggle
+                (change)="tgnecessitaCapacitacao($event.checked)"
+                fxFlex
+                class="max-300 example-margin"
+                [color]="color"
+                [checked]="necessitaCapacitacao"
+              >
+                Necessita Capacitação?
+                {{ necessitaCapacitacao ? "Sim" : "Não" }}
+              </mat-slide-toggle>
+              <div fxFlex="1"></div>
+              <mat-form-field
+                *ngIf="necessitaCapacitacao"
+                fxFlex
+                class="max-300"
+              >
+                <mat-label>Temas de Interesse</mat-label>
+                <mat-select formControlName="TemasDeInteresse" multiple>
+                  <mat-option *ngFor="let tema of temas" [value]="tema.texto">{{
+                    item.texto
+                  }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div fxFlex="1"></div>
+              <mat-slide-toggle
+                (change)="tgacessoInternet($event.checked)"
+                fxFlex
+                class="max-300 example-margin"
+                [color]="color"
+                [checked]="acessoInternet"
+              >
+                Possui acesso à internet? {{ acessoInternet ? "Sim" : "Não" }}
+              </mat-slide-toggle>
+              <div fxFlex="1"></div>
+              <mat-slide-toggle
+                *ngIf="acessoInternet"
+                (focus)="tgacessoPorComputador($event.checked)"
+                fxFlex
+                class="max-300 example-margin"
+                [color]="color"
+                [checked]="acessoPorComputador"
+              >
+                Acesso por Computador / Celular?
+                {{ acessoPorComputador ? "Sim" : "Não" }}
+              </mat-slide-toggle>
+            </div>
+          </div>
+          <div class="container end">
+            <button
+              *ngIf="pagina > 1"
+              (click)="voltar(pagina - 1)"
+              class="button-prior"
+            >
+              Voltar
+            </button>
+            <button
+              mat_suffix
+              (click)="save(formGroup.value, pagina + 1)"
+              class="button-next"
+            >
+              {{
+                pagina >= 3 || this.formGroup.value.PaginaUnica
+                  ? "Finalizar"
+                  : "Próximo"
+              }}
+              ({{ pagina + 1 }})
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()" cdkFocusInitial>
+        Ok, Enviar
+      </button>
+    </div-->
+  </div>
+</div>
